@@ -4,39 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDecisionVoter;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.access.expression.SecurityExpressionHandler;
-import org.springframework.security.access.vote.AffirmativeBased;
-import org.springframework.security.access.vote.RoleVoter;
-import org.springframework.security.authentication.AnonymousAuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-import org.springframework.security.web.access.expression.ExpressionBasedFilterInvocationSecurityMetadataSource;
-import org.springframework.security.web.access.expression.WebExpressionVoter;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import ru.creditnet.security.Permissions;
 import ru.creditnet.security.SecurityService;
 import ru.creditnet.security.impl.AnonymousSecurityServiceWrapper;
@@ -46,7 +29,8 @@ import ru.creditnet.security.spring.TicketAuthenticationProvider;
 import ru.creditnet.security.spring.UsernamePasswordAuthenticationProvider;
 
 import javax.servlet.Filter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -58,13 +42,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public SecurityService securityService;
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests().antMatchers("/**")
-//                .permitAll();
-//    }
 
     @Bean
     @Override

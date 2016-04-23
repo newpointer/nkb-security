@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.util.Assert;
 import ru.creditnet.security.SecurityService;
 import ru.creditnet.security.TicketPrincipal;
@@ -23,32 +22,16 @@ abstract class AbstractSecurityService implements SecurityService {
 
     public static final String NOT_AUTHENTICATED = "Not authenticated";
     private static final String ACCESS_DENIED = "Access denied";
-    //    static final AuthenticationCredentialsNotFoundException AUTHENTICATION_CREDENTIALS_NOT_FOUND_EXCEPTION = new AuthenticationCredentialsNotFoundException(NOT_AUTHENTICATED);
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public String getAuthenticatedUserId() {
-        Optional<Authentication> o = getAuthentication();
-        if (o.isPresent()) {
-            Object principal = o.get().getPrincipal();
-            if (TicketPrincipal.class.isInstance(principal)) {
-                return TicketPrincipal.class.cast(principal).getUserId();
-            }
-            if (User.class.isInstance(principal)) {
-                return User.class.cast(principal).getUsername();
-            }
-        }
-        throw new AuthenticationCredentialsNotFoundException(NOT_AUTHENTICATED);
+        return getAuthentication()
+                .map(Authentication::getPrincipal)
+                .map(p -> (TicketPrincipal) p)
+                .map(TicketPrincipal::getUserId)
+                .orElseThrow(() -> new AuthenticationCredentialsNotFoundException(NOT_AUTHENTICATED));
     }
-
-//    @Override
-//    public String getAuthenticatedUserId() {
-//        return getAuthentication()
-//                .map(Authentication::getPrincipal)
-//                .map(p -> (TicketPrincipal) p)
-//                .map(TicketPrincipal::getUserId)
-//                .orElseThrow(() -> new AuthenticationCredentialsNotFoundException(NOT_AUTHENTICATED));
-//    }
 
     @Override
     public Set<String> getAuthenticatedPermissions() {

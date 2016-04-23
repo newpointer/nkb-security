@@ -18,7 +18,7 @@ import ru.creditnet.security.impl.CnasSecurityService;
 @Configuration
 @EnableConfigurationProperties(ConfigProperties.class)
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = false)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class CnasWebSecurityConfig extends WebSecurityConfig {
 
     private final <T> T endpoint(Class<T> serviceClass, String address) {
@@ -30,13 +30,15 @@ public class CnasWebSecurityConfig extends WebSecurityConfig {
 
     @Bean
     public SecurityServiceEndpoint cnasSecurityServiceEndpoint(ConfigProperties properties) {
-        Assert.notNull(properties.getCnasSecurityServiceUrl());
+        Assert.notNull(properties.getCnasSecurityServiceUrl(), "'cnasSecurityServiceUrl' must not be null");
+
         return endpoint(SecurityServiceEndpoint.class, properties.getCnasSecurityServiceUrl());
     }
 
     @Bean
     public ClientRequestServiceEndpoint cnasClientRequestServiceEndpoint(ConfigProperties properties) {
-        Assert.notNull(properties.getCnasClientRequestServiceUrl());
+        Assert.notNull(properties.getCnasClientRequestServiceUrl(), "'cnasClientRequestServiceUrl' must not be null");
+
         return endpoint(ClientRequestServiceEndpoint.class, properties.getCnasClientRequestServiceUrl());
     }
 
