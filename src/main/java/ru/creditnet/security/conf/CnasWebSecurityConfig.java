@@ -25,7 +25,9 @@ public class CnasWebSecurityConfig extends WebSecurityConfig {
         final JaxWsProxyFactoryBean jaxWsProxyFactoryBean = new JaxWsProxyFactoryBean();
         jaxWsProxyFactoryBean.setServiceClass(serviceClass);
         jaxWsProxyFactoryBean.setAddress(address);
-        return (T) jaxWsProxyFactoryBean.create();
+        @SuppressWarnings("unchecked")
+        T t = (T) jaxWsProxyFactoryBean.create();
+        return t;
     }
 
     @Bean
