@@ -7,6 +7,8 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
 import ru.creditnet.security.SecurityService;
 import ru.creditnet.security.TicketPrincipal;
@@ -26,11 +28,16 @@ abstract class AbstractSecurityService implements SecurityService {
 
     @Override
     public String getAuthenticatedUserId() {
-        return getAuthentication()
+        Object principal = getAuthentication()
                 .map(Authentication::getPrincipal)
-                .map(p -> (TicketPrincipal) p)
-                .map(TicketPrincipal::getUserId)
                 .orElseThrow(() -> new AuthenticationCredentialsNotFoundException(NOT_AUTHENTICATED));
+        if (principal instanceof TicketPrincipal) {
+            return ((TicketPrincipal) principal).getUserId();
+        }
+        if (principal instanceof User) {// for spring-security-test
+            return ((User) principal).getUsername();
+        }
+        throw new UsernameNotFoundException("unknown principal type");
     }
 
     @Override
