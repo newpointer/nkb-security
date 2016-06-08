@@ -97,6 +97,14 @@ public class CnasSecurityService extends AbstractSecurityService {
         return new TicketPrincipal(userId, ticketId, ssoTicket, getPermissions(ssoTicket));
     }
 
+    @Override
+    public void logout(TicketPrincipal ticketPrincipal) {
+        Assert.notNull(ticketPrincipal);
+        Assert.isInstanceOf(SsoTicket.class, ticketPrincipal.getTicket());
+
+        securityServiceEndpoint.logout((SsoTicket) ticketPrincipal.getTicket());
+    }
+
     private NcbUUID parseUUID(String s) {
         try {
             return new NcbUUID(s);

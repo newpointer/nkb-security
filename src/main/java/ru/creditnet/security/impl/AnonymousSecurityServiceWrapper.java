@@ -75,4 +75,9 @@ public class AnonymousSecurityServiceWrapper implements SecurityService {
     public void accessDeniedThrow(String message) {
         securityService.accessDeniedThrow(message);
     }
+
+    @Override
+    public void logout(TicketPrincipal ticketPrincipal) {
+        securityService.logout(ticketPrincipal);
+    }
 }

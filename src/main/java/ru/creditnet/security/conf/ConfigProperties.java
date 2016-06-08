@@ -5,6 +5,7 @@ import ru.creditnet.security.Permissions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author val
@@ -14,7 +15,7 @@ public class ConfigProperties {
 
     private String cnasSecurityServiceUrl;
     private String cnasClientRequestServiceUrl;
-    private int ticketExpiryPeriodSeconds = 3600;
+    private int ticketExpiryPeriodSeconds = Long.valueOf(TimeUnit.HOURS.toSeconds(1)).intValue();
     private String cnasTicketCookieName = "creditnet_ticket";
     private String securityFilterUrlPattern = "/**";
     private List<Permissions> anonymousPermissions = new ArrayList<>();

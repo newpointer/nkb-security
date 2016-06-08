@@ -29,11 +29,18 @@ public class CnasSecurityServiceIT {
 
     @Test
     public void shouldBeAuthenticatedAsCnasUser() throws Exception {
-        TicketPrincipal principal = securityService.authenticate(testCnasUsername, testCnasPassword, "127.0.0.1");
-        assertThat(principal.getUserId()).isNotNull();
-        assertThat(principal.getTicket()).isNotNull().isInstanceOf(SsoTicket.class);
+        TicketPrincipal principal = null;
+        try {
+            principal = securityService.authenticate(testCnasUsername, testCnasPassword, "127.0.0.1");
+            assertThat(principal.getUserId()).isNotNull();
+            assertThat(principal.getTicket()).isNotNull().isInstanceOf(SsoTicket.class);
 
-        TicketPrincipal principal0 = securityService.authenticateWithTicket(principal.getTicketId());
-        assertThat(principal).isEqualToComparingFieldByFieldRecursively(principal0);
+            TicketPrincipal principal0 = securityService.authenticateWithTicket(principal.getTicketId());
+            assertThat(principal).isEqualToComparingFieldByFieldRecursively(principal0);
+        } finally {
+            if (principal != null) {
+                securityService.logout(principal);
+            }
+        }
     }
 }

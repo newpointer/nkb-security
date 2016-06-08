@@ -24,4 +24,6 @@ public interface SecurityService {
     void ensureHasPermission(String permission);
 
     void accessDeniedThrow(String message);
+
+    void logout(TicketPrincipal ticketPrincipal);
 }

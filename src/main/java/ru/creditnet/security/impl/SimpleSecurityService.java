@@ -48,4 +48,8 @@ public class SimpleSecurityService extends AbstractSecurityService {
 
         return new TicketPrincipal(userId, ticket, ticket, AuthorityUtils.authorityListToSet(details.getAuthorities()));
     }
+
+    @Override
+    public void logout(TicketPrincipal ticketPrincipal) {
+    }
 }
