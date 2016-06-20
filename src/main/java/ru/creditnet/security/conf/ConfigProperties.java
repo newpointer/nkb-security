@@ -17,7 +17,6 @@ public class ConfigProperties {
     private String cnasClientRequestServiceUrl;
     private int ticketExpiryPeriodSeconds = Long.valueOf(TimeUnit.HOURS.toSeconds(1)).intValue();
     private String cnasTicketCookieName = "creditnet_ticket";
-    private String securityFilterUrlPattern = "/**";
     private List<Permissions> anonymousPermissions = new ArrayList<>();
 
     public String getCnasSecurityServiceUrl() {
@@ -50,14 +49,6 @@ public class ConfigProperties {
 
     public void setCnasTicketCookieName(String cnasTicketCookieName) {
         this.cnasTicketCookieName = cnasTicketCookieName;
-    }
-
-    public String getSecurityFilterUrlPattern() {
-        return securityFilterUrlPattern;
-    }
-
-    public void setSecurityFilterUrlPattern(String securityFilterUrlPattern) {
-        this.securityFilterUrlPattern = securityFilterUrlPattern;
     }
 
     public List<Permissions> getAnonymousPermissions() {

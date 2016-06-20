@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.Assert;
 import ru.creditnet.security.TicketPrincipal;
 
+import java.util.UUID;
+
 /**
  * @author Alexander Yastrebov
  * @author ankostyuk
@@ -15,6 +17,7 @@ import ru.creditnet.security.TicketPrincipal;
 public class SimpleSecurityService extends AbstractSecurityService {
 
     private static final String TICKET_PREFIX = "ticket_";
+    private static final int TICKET_PREFIX_SIZE = TICKET_PREFIX.length() + 37;
     private final UserDetailsService userDetailsService;
 
     public SimpleSecurityService(UserDetailsService userDetailsService) {
@@ -31,7 +34,7 @@ public class SimpleSecurityService extends AbstractSecurityService {
         }
 
         String userId = details.getUsername();
-        String ticket = TICKET_PREFIX + details.getUsername();
+        String ticket = TICKET_PREFIX + UUID.randomUUID().toString() + "_" + details.getUsername();
 
         return new TicketPrincipal(userId, ticket, ticket, AuthorityUtils.authorityListToSet(details.getAuthorities()));
     }
@@ -40,10 +43,10 @@ public class SimpleSecurityService extends AbstractSecurityService {
     public TicketPrincipal authenticateWithTicket(String ticket) {
         if (ticket == null
                 || !ticket.startsWith(TICKET_PREFIX)
-                || ticket.length() == TICKET_PREFIX.length()) {
+                || ticket.length() <= TICKET_PREFIX_SIZE) {
             throw new BadCredentialsException("Invalid ticket");
         }
-        String userId = ticket.substring(TICKET_PREFIX.length());
+        String userId = ticket.substring(TICKET_PREFIX_SIZE);
         UserDetails details = userDetailsService.loadUserByUsername(userId);
 
         return new TicketPrincipal(userId, ticket, ticket, AuthorityUtils.authorityListToSet(details.getAuthorities()));

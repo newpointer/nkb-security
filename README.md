@@ -49,7 +49,7 @@
     ru.creditnet.security.anonymousPermissions[0]=SEARCH
     ru.creditnet.security.anonymousPermissions[1]=SEARCH_RELATED
     #ru.creditnet.security.cnasTicketCookieName=creditnet_ticket
-    #ru.creditnet.security.securityFilterUrlPattern=/**
+    #security.basic.path=/**
     " > application.properties
 
 Если не заданы **ru.creditnet.security.anonymousPermissions** - то анонимный доступ запрещен.

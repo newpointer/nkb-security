@@ -2,6 +2,7 @@ package ru.creditnet.security.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +53,12 @@ public class Controller {
         Assert.notNull(permission);
 
         securityService.ensureHasPermission(permission);
+        return ResponseEntity.ok(RESULT);
+    }
+
+    @RequestMapping("/preAuthorizeUser1Authority")
+    @PreAuthorize("hasAuthority('SEARCH_TRACES')")
+    public ResponseEntity<String> preAuthorizeUser1Authority() {
         return ResponseEntity.ok(RESULT);
     }
 }

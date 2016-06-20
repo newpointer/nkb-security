@@ -10,12 +10,18 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+import ru.creditnet.security.spring.RequestCookieAuthenticationFilter;
 
+import javax.servlet.Filter;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,9 +58,12 @@ public class ControllerAnonymousTest {
     }
 
     @Test
-    public void shouldBeFiltersIsFour() {
+    public void shouldBeFoundFilter() {
         assertThat(filterChain.getFilterChains()).hasSize(1);
-        assertThat(filterChain.getFilterChains().get(0).getFilters()).hasSize(4);
+
+        List<Class<?>> classes = filterChain.getFilterChains().get(0).getFilters().stream().map(Filter::getClass).collect(Collectors.toList());
+        assertThat(classes).contains(BasicAuthenticationFilter.class);
+        assertThat(classes).contains(AnonymousAuthenticationFilter.class);
     }
 
     @Test
