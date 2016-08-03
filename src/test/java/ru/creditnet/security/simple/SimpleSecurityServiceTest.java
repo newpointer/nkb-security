@@ -3,11 +3,11 @@ package ru.creditnet.security.simple;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import ru.creditnet.security.SecurityService;
 import ru.creditnet.security.TestUtils;
 import ru.creditnet.security.TicketPrincipal;
@@ -17,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author val
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(SimpleSecurityServiceTestApplication.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = SimpleSecurityServiceTestApplication.class)
 public class SimpleSecurityServiceTest {
 
     @Autowired

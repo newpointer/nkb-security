@@ -11,16 +11,17 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.5.RELEASE</version>
+        <version>1.4.0.RELEASE</version>
     </parent>
 
     <properties>
         <unit-tests.skip>false</unit-tests.skip>
-        <integration-tests.skip>true</integration-tests.skip>
+        <skipITs>true</skipITs>
 
         <java.version>1.8</java.version>
         <creditnet.auth.version>2.13.3</creditnet.auth.version>
         <cxf.version>3.1.6</cxf.version>
+        <assertj.version>3.5.2</assertj.version>
     </properties>
 
     <build>
@@ -56,7 +57,7 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <skipTests>${integration-tests.skip}</skipTests>
+                            <skipTests>false</skipTests>
                         </configuration>
                     </execution>
                 </executions>
@@ -156,7 +157,6 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.4.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -172,14 +172,14 @@
             <id>integration</id>
             <properties>
                 <unit-tests.skip>false</unit-tests.skip>
-                <integration-tests.skip>false</integration-tests.skip>
+                <skipITs>false</skipITs>
             </properties>
         </profile>
         <profile>
             <id>integrationOnly</id>
             <properties>
                 <unit-tests.skip>true</unit-tests.skip>
-                <integration-tests.skip>false</integration-tests.skip>
+                <skipITs>false</skipITs>
             </properties>
         </profile>
     </profiles>
